@@ -2,15 +2,17 @@ package srcs.aircraft;
 import srcs.*;
 import srcs.aircraft.*;
 
-public class Helicopter extends Aircraft {
+public class Helicopter extends Aircraft implements Flyable {
 
     public Helicopter(long p_id, String p_name, Coordinates p_coordinate) {
-        this.id = p_id;
-        this.name = p_name;
-        this.coordinates = p_coordinate;
+        super(p_id, p_name, p_coordinate);
     }
 
-    // public void updateConditions() {}
+    public void WhoAmI() {
+        super.WhoAmI();
+    }
 
-    public void WhoAmI() {};
+    public void updateConditions() {
+        System.out.println("Update conditions.");
+    }
 }
