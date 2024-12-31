@@ -2,11 +2,11 @@ package srcs.aircraft;
 import srcs.*;
 import srcs.aircraft.*;
 
-public class Helicopter extends Aircraft implements Flyable {
+public class Baloon extends Aircraft implements Flyable {
 
-    public Helicopter(long p_id, String p_name, Coordinates p_coordinate) {
+    public Baloon(long p_id, String p_name, Coordinates p_coordinate) {
         super(p_id, p_name, p_coordinate);
-        this.type = "Helicopter";
+        this.type = "Baloon";
     }
 
     // @Override
@@ -23,6 +23,6 @@ public class Helicopter extends Aircraft implements Flyable {
     }
 
     public void updateConditions() {
-        System.out.println("H - Update conditions.");
+        System.out.println("B - Update conditions.");
     }
 }
