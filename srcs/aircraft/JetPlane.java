@@ -18,11 +18,41 @@ public class JetPlane extends Aircraft implements Flyable {
     //     System.out.println("My type is: " + type);
     // }
 
-    public String getType() {
-        return type;
-    }
-
     public void updateConditions() {
-        System.out.println("J - Update conditions.");
+        // recuperer la meteo pour la position actuelle
+        String weather = "SUN";
+        int new_height = 0;
+        switch (weather) {
+            case "SUN":
+                this.coordinates.setLatitude(this.coordinates.getLatitude() + 10);
+                new_height = this.coordinates.getHeight() + 2;
+                if (new_height > 100) { 
+                    this.coordinates.setHeight(100);
+                } else {
+                    this.coordinates.setHeight(new_height);
+                }
+                System.out.println(this.type + "#" + this.name + "(" + this.id + "): It's sunny.");
+                break;
+            case "RAIN":
+                this.coordinates.setLatitude(this.coordinates.getLatitude() + 5);
+                System.out.println(this.type + "#" + this.name + "(" + this.id + "): It's raining. Better watch out for lightings.");
+                break;
+            case "FOG":
+                this.coordinates.setLatitude(this.coordinates.getLatitude() + 1);
+                System.out.println(this.type + "#" + this.name + "(" + this.id + "): There's fog.");
+                break;
+            case "SNOW":
+                new_height = this.coordinates.getHeight() - 7;
+                if (new_height <= 0) {
+                    System.out.println(this.type + "#" + this.name + "(" + this.id + ")" + " landing.");
+                    // unregister to weather tower
+                } else {
+                    this.coordinates.setHeight(new_height);
+                }
+                System.out.println(this.type + "#" + this.name + "(" + this.id + "): OMG! Winter is coming!");
+                break;
+            default:
+                throw new AssertionError(); // créer un erreur
+        }
     }
 }

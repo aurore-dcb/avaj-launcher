@@ -8,7 +8,7 @@ public class AircraftFactory {
     private int id_max;
 
     private AircraftFactory() {
-        id_max = -1;
+        id_max = 0;
     }
 
     public static AircraftFactory getInstance() {

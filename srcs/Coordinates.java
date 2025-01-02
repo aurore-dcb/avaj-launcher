@@ -22,4 +22,16 @@ public class Coordinates {
     public int getHeight() {
         return this.height;
     }
+
+    public void setLongitude(int p_longitude) {
+        this.longitude = p_longitude;
+    }
+
+    public void setLatitude(int p_latitude) {
+        this.longitude = p_latitude;
+    }
+
+    public void setHeight(int p_height) {
+        this.height = p_height;
+    }
 }

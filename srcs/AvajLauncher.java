@@ -1,6 +1,7 @@
 package srcs;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import srcs.aircraft.*;
 
 class AvajLauncher {
 
@@ -75,11 +76,12 @@ class AvajLauncher {
             System.err.println("parse error: " + e.getMessage()); 
             System.exit(1);
         }
-        // Coordinates coordinates1 = new Coordinates(654,33,20);
-        // AircraftFactory factory = AircraftFactory.getInstance();
-        // Flyable heli = factory.newAircraft("Helicopter", "H1", coordinates1);
-        // System.out.println("type: " +  heli.getType());
-        // Flyable B1 = factory.newAircraft("Baloon", "B1", coordinates1);
-        // System.out.println("type: " +  B1.getType());
+        Coordinates coordinates1 = new Coordinates(654,33,2);
+        AircraftFactory factory = AircraftFactory.getInstance();
+        Flyable heli = factory.newAircraft("Helicopter", "H1", coordinates1);
+        Flyable B1 = factory.newAircraft("Baloon", "B1", coordinates1);
+        heli.updateConditions();
+        B1.updateConditions();
+        heli.updateConditions();
     }
 }

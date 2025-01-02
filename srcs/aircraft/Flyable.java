@@ -2,9 +2,8 @@ package srcs.aircraft;
 
 import srcs.tower.*;
 
-public abstract interface Flyable {
+public abstract interface Flyable { //ne peut pas etre une interface 
     abstract void updateConditions();
-    abstract String getType();
     // public void registerTower(WeatherTower p_tower);
     // protected WeatherTower weatherTower;
 }
