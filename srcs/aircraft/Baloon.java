@@ -1,6 +1,5 @@
 package srcs.aircraft;
 import srcs.*;
-import srcs.aircraft.*;
 
 public class Baloon extends Aircraft implements Flyable {
 
@@ -68,4 +67,8 @@ public class Baloon extends Aircraft implements Flyable {
                 throw new AssertionError(); // créer un erreur
         }
     }
+
+    // public String getName() {
+    //     return this.name;
+    // }
 }

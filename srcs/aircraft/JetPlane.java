@@ -1,6 +1,5 @@
 package srcs.aircraft;
 import srcs.*;
-import srcs.aircraft.*;
 
 public class JetPlane extends Aircraft implements Flyable {
 
@@ -55,4 +54,8 @@ public class JetPlane extends Aircraft implements Flyable {
                 throw new AssertionError(); // créer un erreur
         }
     }
+
+    // public String getName() {
+    //     return this.name;
+    // }
 }

@@ -14,5 +14,17 @@ public class Aircraft {
         this.type = "Aircraft";
     }
 
+    public String getName() {
+        return this.name;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public long getId() {
+        return this.id;
+    }
+
     // public abstract void WhoAmI();
 }

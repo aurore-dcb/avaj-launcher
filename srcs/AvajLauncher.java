@@ -1,7 +1,9 @@
 package srcs;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import srcs.aircraft.*;
+import srcs.tower.WeatherTower;
 
 class AvajLauncher {
 
@@ -76,12 +78,22 @@ class AvajLauncher {
             System.err.println("parse error: " + e.getMessage()); 
             System.exit(1);
         }
-        Coordinates coordinates1 = new Coordinates(654,33,2);
+        Coordinates coordinates1 = new Coordinates(654,33,1);
         AircraftFactory factory = AircraftFactory.getInstance();
         Flyable heli = factory.newAircraft("Helicopter", "H1", coordinates1);
         Flyable B1 = factory.newAircraft("Baloon", "B1", coordinates1);
-        heli.updateConditions();
-        B1.updateConditions();
-        heli.updateConditions();
+
+        WeatherTower weatherTower = new WeatherTower();
+        weatherTower.register(heli);
+        weatherTower.register(B1);
+        weatherTower.Listing();
+
+        // heli.updateConditions();
+        // B1.updateConditions();
+        // heli.updateConditions();
+
+        // WeatherProvider weatherProvider = WeatherProvider.getInstance();
+        // for (int i = 0; i < 10; i++)
+        //     System.out.println("weather: " + weatherProvider.getCurrentWeather(coordinates1));
     }
 }
