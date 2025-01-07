@@ -14,7 +14,7 @@ public class Tower {
     
     public void unregister(Flyable p_flyable) {
         observers.remove(p_flyable);
-        System.out.println("Tower says: " + "type" + "#" + p_flyable.getName() + "(id)" + " unregistered from weather tower.");
+        System.out.println("Tower says: " + p_flyable.getType() + "#" + p_flyable.getName() + "(" + p_flyable.getId() + ")" + " unregistered to weather tower.");
     };
 
     protected void conditionChanged() {

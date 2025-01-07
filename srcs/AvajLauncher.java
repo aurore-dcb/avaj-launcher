@@ -3,11 +3,11 @@ package srcs;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import srcs.aircraft.*;
-import srcs.tower.WeatherTower;
+import srcs.tower.*;
 
 class AvajLauncher {
 
-    public static boolean verifyInputFirstLine(String line) {
+    public static boolean verifyInputFirstLine(String line, WeatherTower tower) {
         int nb_weather_change;
         try {
             nb_weather_change = Integer.parseInt(line);
@@ -22,7 +22,7 @@ class AvajLauncher {
         return false;
     }
 
-    public static boolean verifyInputLineContent(String line) {
+    public static boolean verifyInputLineContent(String line, WeatherTower tower) {
         String[] splitLine = line.split(" ");
         if (splitLine.length != 5)
             return true;
@@ -33,11 +33,13 @@ class AvajLauncher {
             return true;
         }
         try {
-            Integer.parseInt(splitLine[2]);
-            Integer.parseInt(splitLine[3]);
+            int longitude = Integer.parseInt(splitLine[2]);
+            int latitude = Integer.parseInt(splitLine[3]);
             int height = Integer.parseInt(splitLine[4]);
             if (height <= 0 || height > 100)
                 return true;
+            Coordinates new_coordinates = new Coordinates(longitude, latitude, height);
+            AircraftFactory.getInstance().newAircraft(splitLine[0], splitLine[1], new_coordinates);
         } catch (Exception e) {
             return true;
         }
@@ -45,7 +47,7 @@ class AvajLauncher {
         return false;
     }
 
-    public static void Parser (String file) throws Exception {
+    public static void Parser (String file, WeatherTower tower) throws Exception {
         int nb_line = 0;
         FileReader fileReader = new FileReader(file);
         BufferedReader reader = new BufferedReader(fileReader);
@@ -53,11 +55,11 @@ class AvajLauncher {
 
         while (line != null && !line.isEmpty()) {
             if (nb_line == 0) {
-                if (verifyInputFirstLine(line) == true) {
+                if (verifyInputFirstLine(line, tower) == true) {
                     throw new Exception("wrong format line " + (nb_line + 1) + ".");
                  }
             } else {
-               if (verifyInputLineContent(line) == true) {
+               if (verifyInputLineContent(line, tower) == true) {
                    throw new Exception("wrong format line " + (nb_line + 1) + ".");
                 }
             }
@@ -71,21 +73,26 @@ class AvajLauncher {
         reader.close();
     }
     public static void main (String[] args) {
+
+        WeatherTower weatherTower = new WeatherTower();
+        AircraftFactory factory = AircraftFactory.getInstance();
+
         try {
-            Parser(args[0]);
+            Parser(args[0], weatherTower);
             System.out.println("Parsing OK");
         } catch (Exception e) {
             System.err.println("parse error: " + e.getMessage()); 
             System.exit(1);
         }
+
         Coordinates coordinates1 = new Coordinates(654,33,1);
-        AircraftFactory factory = AircraftFactory.getInstance();
         Flyable heli = factory.newAircraft("Helicopter", "H1", coordinates1);
         Flyable B1 = factory.newAircraft("Baloon", "B1", coordinates1);
 
-        WeatherTower weatherTower = new WeatherTower();
         weatherTower.register(heli);
         weatherTower.register(B1);
+        weatherTower.Listing();
+        weatherTower.unregister(B1);
         weatherTower.Listing();
 
         // heli.updateConditions();

@@ -1,21 +1,15 @@
 package srcs.aircraft;
 import srcs.*;
+import srcs.tower.*;
 
 public class Helicopter extends Aircraft implements Flyable {
+
+    protected WeatherTower weatherTower;
 
     public Helicopter(long p_id, String p_name, Coordinates p_coordinate) {
         super(p_id, p_name, p_coordinate);
         this.type = "Helicopter";
     }
-
-    // @Override
-    // public void WhoAmI() {
-    //     // super.WhoAmI();
-    //     System.out.println("My name is " + this.name);
-    //     System.out.println("My id is " + this.id);
-    //     System.out.println("My coordinates are :\n  longitude: " + this.coordinates.getLongitude() + "\n  latitude: " + this.coordinates.getLatitude() + "\n  height: " + this.coordinates.getHeight());
-    //     System.out.println("My type is: " + type);
-    // }
 
     public void updateConditions() {
         // recuperer la meteo pour la position actuelle

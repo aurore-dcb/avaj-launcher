@@ -1,5 +1,6 @@
 package srcs.aircraft;
 import srcs.*;
+import srcs.tower.*;
 
 public class Aircraft {
     protected long          id;
@@ -26,5 +27,7 @@ public class Aircraft {
         return this.id;
     }
 
-    // public abstract void WhoAmI();
+    public void registerTower(WeatherTower p_tower) {
+        System.out.println("Register tower");
+    }
 }
