@@ -7,24 +7,27 @@ import simulator.aircraft.AircraftFactory;
 import simulator.aircraft.Flyable;
 import simulator.tower.WeatherTower;
 
-class Simulator {
+public class Simulator {
 
-    public static boolean verifyInputFirstLine(String line, WeatherTower tower) {
+    private int simu_runs;
+    private int simu_max_runs;
+
+    private Simulator() {}
+
+    private boolean verifyInputFirstLine(String line, WeatherTower tower) {
         int nb_weather_change;
         try {
-            nb_weather_change = Integer.parseInt(line);
+            simu_max_runs = Integer.parseInt(line);
         } catch (Exception e) {
             return true;
         }
-        if (nb_weather_change <= 0 || nb_weather_change > 100) {
+        if (simu_max_runs <= 0 || simu_max_runs > 100) {
             return true;
         }
-        // stocker ?
-        // System.out.println("nb = " + Integer.toString(nb_weather_change));
         return false;
     }
 
-    public static boolean verifyInputLineContent(String line, WeatherTower tower) {
+    private boolean verifyInputLineContent(String line, WeatherTower tower) {
 
         String[] splitLine = line.split(" ");
         if (splitLine.length != 5)
@@ -51,7 +54,7 @@ class Simulator {
         return false;
     }
 
-    public static void Parser (String file, WeatherTower tower) throws Exception {
+    private void Parser (String file, WeatherTower tower) throws Exception {
         int nb_line = 0;
         FileReader fileReader = new FileReader(file);
         BufferedReader reader = new BufferedReader(fileReader);
@@ -78,20 +81,26 @@ class Simulator {
     }
     public static void main (String[] args) {
 
+        Simulator simulator = new Simulator();
+
         WeatherTower weatherTower = new WeatherTower();
         AircraftFactory factory = AircraftFactory.getInstance();
 
         try {
-            Parser(args[0], weatherTower);
-            // System.out.println("Parsing OK");
+            simulator.Parser(args[0], weatherTower);
         } catch (Exception e) {
             System.err.println("parse error: " + e.getMessage()); 
             System.exit(1);
         }
 
-        Coordinates test_coor = new Coordinates(100,100,10);
-        Flyable test_fly = factory.newAircraft("Baloon", "B0", test_coor);
-        test_fly.registerTower(weatherTower);
-        test_fly.updateConditions();
+        while (simulator.simu_runs < simulator.simu_max_runs) {
+            // System.out.println("Trigger weather: " + Integer.toString(simulator.simu_runs));
+            weatherTower.changeWeather();
+            simulator.simu_runs++;
+        }
+        // Coordinates test_coor = new Coordinates(100,100,10);
+        // Flyable test_fly = factory.newAircraft("Baloon", "B0", test_coor);
+        // test_fly.registerTower(weatherTower);
+        // test_fly.updateConditions();
     }
 }

@@ -11,7 +11,7 @@ public class Baloon extends Aircraft {
     @Override
     public void updateConditions() {
         // recuperer la meteo pour la position actuelle
-        String weather = "SNOW";
+        String weather = "SUN";
         int new_height = 0;
         switch (weather) {
             case "SUN":
