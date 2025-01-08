@@ -1,11 +1,13 @@
-package srcs;
+package simulator;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import srcs.aircraft.*;
-import srcs.tower.*;
 
-class AvajLauncher {
+import simulator.aircraft.AircraftFactory;
+import simulator.aircraft.Flyable;
+import simulator.tower.WeatherTower;
+
+class Simulator {
 
     public static boolean verifyInputFirstLine(String line, WeatherTower tower) {
         int nb_weather_change;
@@ -23,6 +25,7 @@ class AvajLauncher {
     }
 
     public static boolean verifyInputLineContent(String line, WeatherTower tower) {
+
         String[] splitLine = line.split(" ");
         if (splitLine.length != 5)
             return true;
@@ -39,7 +42,8 @@ class AvajLauncher {
             if (height <= 0 || height > 100)
                 return true;
             Coordinates new_coordinates = new Coordinates(longitude, latitude, height);
-            AircraftFactory.getInstance().newAircraft(splitLine[0], splitLine[1], new_coordinates);
+            Flyable new_flyable = AircraftFactory.getInstance().newAircraft(splitLine[0], splitLine[1], new_coordinates);
+            new_flyable.registerTower(tower);
         } catch (Exception e) {
             return true;
         }
@@ -79,28 +83,15 @@ class AvajLauncher {
 
         try {
             Parser(args[0], weatherTower);
-            System.out.println("Parsing OK");
+            // System.out.println("Parsing OK");
         } catch (Exception e) {
             System.err.println("parse error: " + e.getMessage()); 
             System.exit(1);
         }
 
-        Coordinates coordinates1 = new Coordinates(654,33,1);
-        Flyable heli = factory.newAircraft("Helicopter", "H1", coordinates1);
-        Flyable B1 = factory.newAircraft("Baloon", "B1", coordinates1);
-
-        weatherTower.register(heli);
-        weatherTower.register(B1);
-        weatherTower.Listing();
-        weatherTower.unregister(B1);
-        weatherTower.Listing();
-
-        // heli.updateConditions();
-        // B1.updateConditions();
-        // heli.updateConditions();
-
-        // WeatherProvider weatherProvider = WeatherProvider.getInstance();
-        // for (int i = 0; i < 10; i++)
-        //     System.out.println("weather: " + weatherProvider.getCurrentWeather(coordinates1));
+        Coordinates test_coor = new Coordinates(100,100,10);
+        Flyable test_fly = factory.newAircraft("Baloon", "B0", test_coor);
+        test_fly.registerTower(weatherTower);
+        test_fly.updateConditions();
     }
 }

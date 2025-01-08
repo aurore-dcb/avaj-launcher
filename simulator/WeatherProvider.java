@@ -1,4 +1,4 @@
-package srcs;
+package simulator;
 
 import java.util.Random;
 

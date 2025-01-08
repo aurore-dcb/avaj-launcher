@@ -1,6 +1,6 @@
-package srcs.tower;
+package simulator.tower;
 
-import srcs.*;
+import simulator.*;
 
 public class WeatherTower extends Tower {
 

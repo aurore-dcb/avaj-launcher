@@ -1,6 +1,6 @@
-package srcs.aircraft;
+package simulator.aircraft;
 
-import srcs.*;
+import simulator.Coordinates;
 
 public class AircraftFactory {
 

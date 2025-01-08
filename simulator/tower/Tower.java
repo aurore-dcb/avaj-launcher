@@ -1,7 +1,7 @@
-package srcs.tower;
+package simulator.tower;
 
 import java.util.*;
-import srcs.aircraft.*;
+import simulator.aircraft.*;
 
 public class Tower {
     
@@ -26,10 +26,8 @@ public class Tower {
     };
 
     public void Listing() {
-        Iterator<Flyable> it = observers.iterator();
-        System.out.println("List observers :");
-        while (it.hasNext()) {
-            System.out.println(it.next().getName());
+        for (Flyable flyable : observers) {
+            System.out.println(flyable.getType() + " " + flyable.getName() + " " + flyable.getId() + " " + flyable.getCoordinates());
         }
     }
 }
