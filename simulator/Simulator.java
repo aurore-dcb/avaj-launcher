@@ -2,9 +2,9 @@ package simulator;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 
-import simulator.aircraft.AircraftFactory;
-import simulator.aircraft.Flyable;
+import simulator.aircraft.*;
 import simulator.tower.WeatherTower;
 
 public class Simulator {
@@ -50,57 +50,63 @@ public class Simulator {
         } catch (Exception e) {
             return true;
         }
-        // stocker ?
         return false;
     }
 
     private void Parser (String file, WeatherTower tower) throws Exception {
         int nb_line = 0;
-        FileReader fileReader = new FileReader(file);
-        BufferedReader reader = new BufferedReader(fileReader);
-        String line = reader.readLine();
+        try {
+            // tester en changeant les droits du fichier
+            FileReader fileReader = new FileReader(file);
+            BufferedReader reader = new BufferedReader(fileReader);
 
-        while (line != null && !line.isEmpty()) {
-            if (nb_line == 0) {
-                if (verifyInputFirstLine(line, tower) == true) {
-                    throw new Exception("wrong format line " + (nb_line + 1) + ".");
-                 }
-            } else {
-               if (verifyInputLineContent(line, tower) == true) {
-                   throw new Exception("wrong format line " + (nb_line + 1) + ".");
+            String line = reader.readLine();
+
+            while (line != null && !line.isEmpty()) {
+                if (nb_line == 0) {
+                    if (verifyInputFirstLine(line, tower) == true) {
+                        throw new Exception("parse error: wrong format line " + (nb_line + 1) + ".");
+                    }
+                } else {
+                if (verifyInputLineContent(line, tower) == true) {
+                    throw new Exception("parse error: wrong format line " + (nb_line + 1) + ".");
+                    }
                 }
+                nb_line++;
+                line = reader.readLine();
             }
-            nb_line++;
-            line = reader.readLine();
-        }
 
-        if (nb_line < 2) {
-            throw new Exception("wrong format input file.");
+            if (nb_line < 2) {
+                throw new Exception("parse error: wrong format input file.");
+            }
+            reader.close();
         }
-        reader.close();
+        catch (IOException e) {
+            throw new Exception("input error: " + e.getMessage());
+        }
     }
+    
     public static void main (String[] args) {
 
         Simulator simulator = new Simulator();
-
         WeatherTower weatherTower = new WeatherTower();
         AircraftFactory factory = AircraftFactory.getInstance();
+        Logger logger = Logger.getInstance();
 
         try {
+            if (args.length != 1) {
+                throw new Exception("input error: The program need one argument.");
+            }
             simulator.Parser(args[0], weatherTower);
         } catch (Exception e) {
-            System.err.println("parse error: " + e.getMessage()); 
+            System.err.println(e.getMessage()); 
             System.exit(1);
         }
 
         while (simulator.simu_runs < simulator.simu_max_runs) {
-            // System.out.println("Trigger weather: " + Integer.toString(simulator.simu_runs));
             weatherTower.changeWeather();
             simulator.simu_runs++;
         }
-        // Coordinates test_coor = new Coordinates(100,100,10);
-        // Flyable test_fly = factory.newAircraft("Baloon", "B0", test_coor);
-        // test_fly.registerTower(weatherTower);
-        // test_fly.updateConditions();
+        logger.closeWriter(); // absolument close si y'a un probleme et si le logger a ete instancié
     }
 }

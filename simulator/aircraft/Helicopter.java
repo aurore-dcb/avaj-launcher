@@ -1,7 +1,10 @@
 package simulator.aircraft;
-import simulator.Coordinates;
+
+import simulator.*;
 
 public class Helicopter extends Aircraft {
+
+    private Logger logger = Logger.getInstance();
 
     public Helicopter(long p_id, String p_name, Coordinates p_coordinate) {
         super(p_id, p_name, p_coordinate);
@@ -10,9 +13,11 @@ public class Helicopter extends Aircraft {
 
     @Override
     public void updateConditions() {
-        // recuperer la meteo pour la position actuelle
-        String weather = "SUN";
+
+        String weather = this.weatherTower.getWeather(this.coordinates);
         int new_height = 0;
+        String message;
+
         switch (weather) {
             case "SUN":
                 this.coordinates.setLongitude(this.coordinates.getLongitude() + 10);
@@ -22,18 +27,22 @@ public class Helicopter extends Aircraft {
                 } else {
                     this.coordinates.setHeight(new_height);
                 }
-                System.out.println(this.type + "#" + this.name + "(" + this.id + "): This is hot.");
+                message = this.type + "#" + this.name + "(" + this.id + "): This is hot.";
+                logger.writeLog(message);
                 break;
             case "RAIN":
                 this.coordinates.setLongitude(this.coordinates.getLongitude() + 5);
-                System.out.println(this.type + "#" + this.name + "(" + this.id + "): It's rainning.");
+                message = this.type + "#" + this.name + "(" + this.id + "): It's rainning.";
+                logger.writeLog(message);
                 break;
             case "FOG":
                 this.coordinates.setLongitude(this.coordinates.getLongitude() + 1);
-                System.out.println(this.type + "#" + this.name + "(" + this.id + "): There's fog here.");
+                message = this.type + "#" + this.name + "(" + this.id + "): There's fog here.";
+                logger.writeLog(message);
                 break;
             case "SNOW":
-                System.out.println(this.type + "#" + this.name + "(" + this.id + "): My rotor is going to freeze!");
+                message = this.type + "#" + this.name + "(" + this.id + "): My rotor is going to freeze!";
+                logger.writeLog(message);
                 new_height = this.coordinates.getHeight() + 12;
                 if (new_height > 100) {
                     this.coordinates.setHeight(100);

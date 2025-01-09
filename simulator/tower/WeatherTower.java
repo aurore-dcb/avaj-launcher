@@ -1,6 +1,7 @@
 package simulator.tower;
 
-import simulator.*;
+import simulator.Coordinates;
+import simulator.WeatherProvider;
 
 public class WeatherTower extends Tower {
 
@@ -10,7 +11,6 @@ public class WeatherTower extends Tower {
     }
 
     public void changeWeather() {
-        System.out.println("change weather");
         this.conditionChanged();
     }
 }

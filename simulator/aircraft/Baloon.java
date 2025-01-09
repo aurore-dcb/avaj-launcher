@@ -1,7 +1,10 @@
 package simulator.aircraft;
-import simulator.Coordinates;
+
+import simulator.*;
 
 public class Baloon extends Aircraft {
+
+    private Logger logger = Logger.getInstance();
 
     public Baloon(long p_id, String p_name, Coordinates p_coordinate) {
         super(p_id, p_name, p_coordinate);
@@ -10,9 +13,11 @@ public class Baloon extends Aircraft {
 
     @Override
     public void updateConditions() {
-        // recuperer la meteo pour la position actuelle
-        String weather = "SUN";
+
+        String weather = this.weatherTower.getWeather(this.coordinates);
         int new_height = 0;
+        String message;
+
         switch (weather) {
             case "SUN":
                 this.coordinates.setLongitude(this.coordinates.getLongitude() + 2);
@@ -22,10 +27,12 @@ public class Baloon extends Aircraft {
                 } else {
                     this.coordinates.setHeight(new_height);
                 }
-                System.out.println(this.type + "#" + this.name + "(" + this.id + "): Let's enjoy the good weather and take some pics.");
+                message = this.type + "#" + this.name + "(" + this.id + "): Let's enjoy the good weather and take some pics.";
+                logger.writeLog(message);
                 break;
             case "RAIN":
-                System.out.println(this.type + "#" + this.name + "(" + this.id + "): Damn you rain! You messed up my baloon.");
+                message = this.type + "#" + this.name + "(" + this.id + "): Damn you rain! You messed up my baloon.";
+                logger.writeLog(message);
                 new_height = this.coordinates.getHeight() - 5;
                 if (new_height <= 0) {
                     Land();
@@ -34,7 +41,8 @@ public class Baloon extends Aircraft {
                 }
                 break;
             case "FOG":
-                System.out.println(this.type + "#" + this.name + "(" + this.id + "): There's fog, can't see anything.");
+                message = this.type + "#" + this.name + "(" + this.id + "): There's fog, can't see anything.";
+                logger.writeLog(message);
                 new_height = this.coordinates.getHeight() - 3;
                 if (new_height <= 0) {
                     Land();
@@ -43,7 +51,8 @@ public class Baloon extends Aircraft {
                 }
                 break;
             case "SNOW":
-                System.out.println(this.type + "#" + this.name + "(" + this.id + "): It's snowing. We're gonna crash.");
+                message = this.type + "#" + this.name + "(" + this.id + "): It's snowing. We're gonna crash.";
+                logger.writeLog(message);
                 new_height = this.coordinates.getHeight() - 15;
                 if (new_height <= 0) {
                     Land();

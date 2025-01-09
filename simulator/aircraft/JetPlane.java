@@ -1,7 +1,10 @@
 package simulator.aircraft;
-import simulator.Coordinates;
+
+import simulator.*;
 
 public class JetPlane extends Aircraft {
+
+    private Logger logger = Logger.getInstance();
 
     public JetPlane(long p_id, String p_name, Coordinates p_coordinate) {
         super(p_id, p_name, p_coordinate);
@@ -10,9 +13,11 @@ public class JetPlane extends Aircraft {
 
     @Override
     public void updateConditions() {
-        // recuperer la meteo pour la position actuelle
-        String weather = "SUN";
+        
+        String weather = this.weatherTower.getWeather(this.coordinates);
         int new_height = 0;
+        String message;
+
         switch (weather) {
             case "SUN":
                 this.coordinates.setLatitude(this.coordinates.getLatitude() + 10);
@@ -22,18 +27,22 @@ public class JetPlane extends Aircraft {
                 } else {
                     this.coordinates.setHeight(new_height);
                 }
-                System.out.println(this.type + "#" + this.name + "(" + this.id + "): It's sunny.");
+                message = this.type + "#" + this.name + "(" + this.id + "): It's sunny.";
+                logger.writeLog(message);
                 break;
             case "RAIN":
                 this.coordinates.setLatitude(this.coordinates.getLatitude() + 5);
-                System.out.println(this.type + "#" + this.name + "(" + this.id + "): It's raining. Better watch out for lightings.");
+                message = this.type + "#" + this.name + "(" + this.id + "): It's raining. Better watch out for lightings.";
+                logger.writeLog(message);
                 break;
             case "FOG":
                 this.coordinates.setLatitude(this.coordinates.getLatitude() + 1);
-                System.out.println(this.type + "#" + this.name + "(" + this.id + "): There's fog.");
+                message = this.type + "#" + this.name + "(" + this.id + "): There's fog.";
+                logger.writeLog(message);
                 break;
             case "SNOW":
-                System.out.println(this.type + "#" + this.name + "(" + this.id + "): OMG! Winter is coming!");
+                message = this.type + "#" + this.name + "(" + this.id + "): OMG! Winter is coming!";
+                logger.writeLog(message);
                 new_height = this.coordinates.getHeight() - 7;
                 if (new_height <= 0) {
                     Land();

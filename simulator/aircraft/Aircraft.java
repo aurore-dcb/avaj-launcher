@@ -1,5 +1,6 @@
 package simulator.aircraft;
-import simulator.Coordinates;
+
+import simulator.*;
 import simulator.tower.WeatherTower;
 
 abstract class Aircraft implements Flyable {
@@ -8,6 +9,7 @@ abstract class Aircraft implements Flyable {
     protected Coordinates   coordinates;
     protected String        type;
     protected WeatherTower  weatherTower;
+    private Logger logger = Logger.getInstance();
 
     protected Aircraft(long p_id, String p_name, Coordinates p_coordinate) {
         this.id = p_id;
@@ -28,7 +30,7 @@ abstract class Aircraft implements Flyable {
         return this.id;
     }
 
-    public String getCoordinates() {
+    public String getCoordinates() { // comment
         String longitude = Integer.toString(coordinates.getLongitude()) ;
         String latitude = Integer.toString(coordinates.getLatitude());
         String height = Integer.toString(coordinates.getHeight());
@@ -46,7 +48,9 @@ abstract class Aircraft implements Flyable {
     }
 
     public void Land() {
-        System.out.println(this.type + "#" + this.name + "(" + this.id + ")" + " landing.");
+
+        String message = this.type + "#" + this.name + "(" + this.id + ")" + " landing.";
+        logger.writeLog(message);
         this.unregisterTower();
     }
 }
