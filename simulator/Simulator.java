@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import simulator.aircraft.*;
 import simulator.tower.WeatherTower;
+import simulator.exceptions.*;
 
 public class Simulator {
 
@@ -65,11 +66,13 @@ public class Simulator {
             while (line != null && !line.isEmpty()) {
                 if (nb_line == 0) {
                     if (verifyInputFirstLine(line, tower) == true) {
-                        throw new Exception("parse error: wrong format line " + (nb_line + 1) + ".");
+                        throw new ParseErrorException("wrong first line format.");
+                        // throw new Exception("parse error: wrong format line " + (nb_line + 1) + ".");
                     }
                 } else {
-                if (verifyInputLineContent(line, tower) == true) {
-                    throw new Exception("parse error: wrong format line " + (nb_line + 1) + ".");
+                    if (verifyInputLineContent(line, tower) == true) {
+                        throw new ParseErrorException("wrong flyable format.");
+                        // throw new Exception("parse error: wrong format line " + (nb_line + 1) + ".");
                     }
                 }
                 nb_line++;
@@ -77,7 +80,7 @@ public class Simulator {
             }
 
             if (nb_line < 2) {
-                throw new Exception("parse error: wrong format input file.");
+                throw new ParseErrorException("wrong format input file.");
             }
             reader.close();
         }
