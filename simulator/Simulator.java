@@ -57,7 +57,6 @@ public class Simulator {
     private void Parser (String file, WeatherTower tower) throws Exception {
         int nb_line = 0;
         try {
-            // tester en changeant les droits du fichier
             FileReader fileReader = new FileReader(file);
             BufferedReader reader = new BufferedReader(fileReader);
 
@@ -66,13 +65,11 @@ public class Simulator {
             while (line != null && !line.isEmpty()) {
                 if (nb_line == 0) {
                     if (verifyInputFirstLine(line, tower) == true) {
-                        throw new ParseErrorException("wrong first line format.");
-                        // throw new Exception("parse error: wrong format line " + (nb_line + 1) + ".");
+                        throw new ParseErrorException("Wrong first line format.");
                     }
                 } else {
                     if (verifyInputLineContent(line, tower) == true) {
-                        throw new ParseErrorException("wrong flyable format.");
-                        // throw new Exception("parse error: wrong format line " + (nb_line + 1) + ".");
+                        throw new ParseErrorException("Wrong flyable format.");
                     }
                 }
                 nb_line++;
@@ -80,12 +77,12 @@ public class Simulator {
             }
 
             if (nb_line < 2) {
-                throw new ParseErrorException("wrong format input file.");
+                throw new ParseErrorException("Wrong format input file.");
             }
             reader.close();
         }
         catch (IOException e) {
-            throw new Exception("input error: " + e.getMessage());
+            throw new Exception("Input error: " + e.getMessage());
         }
     }
     
@@ -98,11 +95,11 @@ public class Simulator {
 
         try {
             if (args.length != 1) {
-                throw new Exception("input error: The program need one argument.");
+                throw new Exception("Input error: The program need one argument.");
             }
             simulator.Parser(args[0], weatherTower);
         } catch (Exception e) {
-            System.err.println(e.getMessage()); 
+            System.err.println(e.getMessage());
             System.exit(1);
         }
 

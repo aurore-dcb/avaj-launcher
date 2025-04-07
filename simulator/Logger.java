@@ -16,7 +16,7 @@ public class Logger {
             fileWriter = new FileWriter(output_file, false);
             writer = new BufferedWriter(fileWriter);
         } catch (IOException e) {
-            System.out.println("output error: " + e.getMessage());
+            System.out.println("Output error: " + e.getMessage());
             System.exit(1);
         }
     }
@@ -33,7 +33,7 @@ public class Logger {
             writer.write(to_write);
             writer.newLine();
         } catch (IOException e) {
-            System.out.println("output error: " + e.getMessage());
+            System.out.println("Output error: " + e.getMessage());
             System.exit(1);
         }
     }
@@ -42,7 +42,7 @@ public class Logger {
         try {
             writer.close();
         } catch (IOException e) {
-            System.out.println("output error: " + e.getMessage());
+            System.out.println("Output error: " + e.getMessage());
             System.exit(1);
         }
     }

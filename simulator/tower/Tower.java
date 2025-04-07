@@ -31,7 +31,6 @@ public class Tower {
     }
 
     protected void conditionChanged() {
-        System.out.println("\n");
         Iterator<Flyable> it = observers.iterator();
         while (it.hasNext()) {
             it.next().updateConditions();

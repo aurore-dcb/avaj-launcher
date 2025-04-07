@@ -1,7 +1,7 @@
 package simulator.exceptions;
 
 public class ExecutionException extends Exception {
-    public ParseErrorException (String message) {
+    public ExecutionException (String message) {
         super("execution error: " + message);
     }
 }
