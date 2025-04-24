@@ -3,13 +3,13 @@ package simulator.aircraft;
 import simulator.*;
 import simulator.tower.WeatherTower;
 
-abstract class Aircraft implements Flyable {
+public abstract class Aircraft implements Flyable {
     protected long          id;
     protected String        name;
     protected Coordinates   coordinates;
     protected String        type;
     protected WeatherTower  weatherTower;
-    private Logger logger = Logger.getInstance();
+    protected Logger logger = Logger.getInstance();
 
     protected Aircraft(long p_id, String p_name, Coordinates p_coordinate) {
         this.id = p_id;
@@ -53,4 +53,7 @@ abstract class Aircraft implements Flyable {
         logger.writeLog(message);
         this.unregisterTower();
     }
+
+    @Override
+    public abstract void updateConditions();
 }

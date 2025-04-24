@@ -4,8 +4,6 @@ import simulator.*;
 
 public class JetPlane extends Aircraft {
 
-    private Logger logger = Logger.getInstance();
-
     public JetPlane(long p_id, String p_name, Coordinates p_coordinate) {
         super(p_id, p_name, p_coordinate);
         this.type = "JetPlane";

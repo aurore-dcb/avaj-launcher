@@ -34,7 +34,8 @@ public class AircraftFactory {
                 newFlyable = new Baloon(id_max + 1, p_name, p_coordinates);
                 break;
             default:
-                throw new AssertionError(); // créer une erreur 'type d'aircraft inconnu'
+                System.out.println("⚠ An unknown type of aircraft have been detected. It will be ignored in the simulation.");
+                return null;
         }
         id_max++;
         return newFlyable;

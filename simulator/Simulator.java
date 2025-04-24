@@ -47,6 +47,9 @@ public class Simulator {
                 return true;
             Coordinates new_coordinates = new Coordinates(longitude, latitude, height);
             Flyable new_flyable = AircraftFactory.getInstance().newAircraft(splitLine[0], splitLine[1], new_coordinates);
+            if (new_flyable == null) {
+                return false;
+            }
             new_flyable.registerTower(tower);
         } catch (Exception e) {
             return true;

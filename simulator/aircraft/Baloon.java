@@ -4,8 +4,6 @@ import simulator.*;
 
 public class Baloon extends Aircraft {
 
-    private Logger logger = Logger.getInstance();
-
     public Baloon(long p_id, String p_name, Coordinates p_coordinate) {
         super(p_id, p_name, p_coordinate);
         this.type = "Baloon";
