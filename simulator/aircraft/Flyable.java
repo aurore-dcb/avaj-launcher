@@ -3,12 +3,12 @@ package simulator.aircraft;
 import simulator.tower.WeatherTower;
 
 public interface Flyable {
-    abstract void updateConditions();
-    abstract void registerTower(WeatherTower p_tower);
-    abstract String getName();
-    abstract long getId();
-    abstract String getType();
-    abstract String getCoordinates();
-    abstract void unregisterTower();
-    abstract void Land();
+    public abstract void updateConditions();
+    public abstract void registerTower(WeatherTower p_tower);
+    public abstract String getName();
+    public abstract long getId();
+    public abstract String getType();
+    public abstract String getCoordinates();
+    public abstract void unregisterTower();
+    public abstract void Land();
 }
