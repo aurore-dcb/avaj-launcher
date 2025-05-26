@@ -1,3 +1,4 @@
 *.class
 sources.txt
 simulation.txt
+global(2).puml

@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import java.io.File;
+import java.util.Scanner;
+
 import simulator.aircraft.*;
 import simulator.tower.WeatherTower;
 import simulator.exceptions.*;
@@ -31,6 +34,7 @@ public class Simulator {
     private boolean verifyInputLineContent(String line, WeatherTower tower) {
 
         String[] splitLine = line.split(" ");
+        // System.out.println("splitLine.length: " + splitLine.length);
         if (splitLine.length != 5)
             return true;
         if (splitLine[0].matches("^[a-zA-Z]*$") == false) {
@@ -60,12 +64,16 @@ public class Simulator {
     private void Parser (String file, WeatherTower tower) throws Exception {
         int nb_line = 0;
         try {
-            FileReader fileReader = new FileReader(file);
-            BufferedReader reader = new BufferedReader(fileReader);
+            File fileInput = new File(file);
+            Scanner sc = new Scanner(fileInput);
 
-            String line = reader.readLine();
-
-            while (line != null && !line.isEmpty()) {
+            String line = "";
+            while (sc.hasNextLine()) {
+                line = sc.nextLine();
+                if (line.isEmpty()) {
+                    nb_line++;
+                    continue; // skip empty lines
+                }
                 if (nb_line == 0) {
                     if (verifyInputFirstLine(line, tower) == true) {
                         throw new ParseErrorException("Wrong first line format.");
@@ -76,13 +84,11 @@ public class Simulator {
                     }
                 }
                 nb_line++;
-                line = reader.readLine();
             }
-
             if (nb_line < 2) {
                 throw new ParseErrorException("Wrong format input file.");
             }
-            reader.close();
+            sc.close();
         }
         catch (IOException e) {
             throw new Exception("Input error: " + e.getMessage());

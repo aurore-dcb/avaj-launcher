@@ -2,7 +2,7 @@ package simulator;
 
 import java.util.Random;
 
-public class WeatherProvider {
+public final class WeatherProvider {
 
     private static WeatherProvider instance = null;
     private static String weather[] = {"RAIN", "FOG", "SUN", "SNOW"};
