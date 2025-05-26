@@ -34,7 +34,6 @@ public class Simulator {
     private boolean verifyInputLineContent(String line, WeatherTower tower) {
 
         String[] splitLine = line.split(" ");
-        // System.out.println("splitLine.length: " + splitLine.length);
         if (splitLine.length != 5)
             return true;
         if (splitLine[0].matches("^[a-zA-Z]*$") == false) {
@@ -47,7 +46,7 @@ public class Simulator {
             int longitude = Integer.parseInt(splitLine[2]);
             int latitude = Integer.parseInt(splitLine[3]);
             int height = Integer.parseInt(splitLine[4]);
-            if (height <= 0 || height > 100)
+            if (height <= 0 || height > 100 || latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180)
                 return true;
             Coordinates new_coordinates = new Coordinates(longitude, latitude, height);
             Flyable new_flyable = AircraftFactory.getInstance().newAircraft(splitLine[0], splitLine[1], new_coordinates);
@@ -64,8 +63,7 @@ public class Simulator {
     private void Parser (String file, WeatherTower tower) throws Exception {
         int nb_line = 0;
         try {
-            File fileInput = new File(file);
-            Scanner sc = new Scanner(fileInput);
+            Scanner sc = new Scanner(new File(file));
 
             String line = "";
             while (sc.hasNextLine()) {

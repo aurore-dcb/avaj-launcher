@@ -9,6 +9,10 @@ public class Coordinates {
         this.longitude = p_longitude;
         this.latitude = p_latitude;
         this.height = p_height;
+        System.out.println("Coordinates created:\n" + 
+                "Longitude: " + this.longitude + "\n" +
+                "Latitude: " + this.latitude + "\n" +
+                "Height: " + this.height);
     }
 
     public int getLongitude() {

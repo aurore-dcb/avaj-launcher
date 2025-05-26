@@ -20,7 +20,7 @@ public final class WeatherProvider {
     public String getCurrentWeather(Coordinates p_coordinates) {
         Random r = new Random();
         int random_num = r.nextInt(4);
-        int seed = p_coordinates.getLatitude() + p_coordinates.getLongitude() + p_coordinates.getHeight();
+        int seed = Math.abs(p_coordinates.getLatitude()) + Math.abs(p_coordinates.getLongitude()) + p_coordinates.getHeight();
         String res = this.weather[(seed + random_num) % 4];
         return res; 
     }
