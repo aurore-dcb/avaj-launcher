@@ -18,7 +18,7 @@ public class Simulator {
 
     private Simulator() {}
 
-    private boolean verifyInputFirstLine(String line, WeatherTower tower) {
+    private boolean verifyInputFirstLine(String line) {
         int nb_weather_change;
         try {
             simu_max_runs = Integer.parseInt(line);
@@ -73,7 +73,7 @@ public class Simulator {
                     continue; // skip empty lines
                 }
                 if (nb_line == 0) {
-                    if (verifyInputFirstLine(line, tower) == true) {
+                    if (verifyInputFirstLine(line) == true) {
                         throw new ParseErrorException("Wrong first line format.");
                     }
                 } else {

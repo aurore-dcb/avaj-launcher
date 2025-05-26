@@ -8,17 +8,17 @@ public class Tower {
     
     private List<Flyable> observers = new ArrayList<Flyable>();
     private List<Flyable> to_unregister = new ArrayList<Flyable>();
-    private Logger logger = Logger.getInstance();
+    protected Logger logger = Logger.getInstance();
     
     public void register(Flyable p_flyable) {
         observers.add(p_flyable);
-        String message = "Tower says: " + p_flyable.getType() + "#" + p_flyable.getName() + "(" + p_flyable.getId() + ")" + " registered to weather tower.";
+        String message = "Tower says: " + p_flyable.getType() + "#" + p_flyable.getName() + "(" + p_flyable.getId() + ")" + " registered to tower.";
         logger.writeLog(message);
     };
     
     public void unregister(Flyable p_flyable) {
         to_unregister.add(p_flyable);
-        String message = "Tower says: " + p_flyable.getType() + "#" + p_flyable.getName() + "(" + p_flyable.getId() + ")" + " unregistered to weather tower.";
+        String message = "Tower says: " + p_flyable.getType() + "#" + p_flyable.getName() + "(" + p_flyable.getId() + ")" + " unregistered to tower.";
         logger.writeLog(message);
     };
 
