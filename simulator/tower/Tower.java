@@ -12,7 +12,7 @@ public class Tower {
     
     public void register(Flyable p_flyable) {
         observers.add(p_flyable);
-        String message = "Tower says: " + p_flyable.getType() + "#" + p_flyable.getName() + "(" + p_flyable.getId() + ")" + " registered to tower.";
+        String message = "Tower says: " + p_flyable.getType() + "#" + p_flyable.getName() + "(" + p_flyable.getId() + ")" + " registered to weather tower.";
         logger.writeLog(message);
     };
     
@@ -37,10 +37,4 @@ public class Tower {
         }
         clear_observers();
     };
-
-    public void Listing(List<Flyable> list) { // comment
-        for (Flyable flyable : list) {
-            System.out.println(flyable.getType() + " " + flyable.getName() + " " + flyable.getId() + " " + flyable.getCoordinates());
-        }
-    }
 }
