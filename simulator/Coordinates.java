@@ -24,10 +24,18 @@ public class Coordinates {
     }
 
     public void setLongitude(int p_longitude) {
+        // normalize the longitude to be within -180 to 180
+        p_longitude = ((p_longitude + 180) % 360 + 360) % 360 - 180;
         this.longitude = p_longitude;
     }
 
     public void setLatitude(int p_latitude) {
+        // normalize the latitude to be within -90 to 90
+        if (p_latitude < -90) {
+            p_latitude = -90;
+        } else if (p_latitude > 90) {
+            p_latitude = 90;
+        }
         this.longitude = p_latitude;
     }
 

@@ -92,10 +92,10 @@ public class Simulator {
                 simulator.simu_runs++;
             }
         } catch (CustomException e) {
-			System.err.println(e.getMessage());
+			System.out.println(e.getMessage());
             System.exit(1);
 		} catch (IOException e) {
-			System.err.println("File Error: Can't find or read the file \'" + args[0] + "\'.");
+			System.out.println("File Error: Can't find or read the file \'" + args[0] + "\'.");
             System.exit(1);
 		}
     }
