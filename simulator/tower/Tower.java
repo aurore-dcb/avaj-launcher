@@ -18,7 +18,7 @@ public class Tower {
     
     public void unregister(Flyable p_flyable) {
         to_unregister.add(p_flyable);
-        String message = "Tower says: " + p_flyable.getType() + "#" + p_flyable.getName() + "(" + p_flyable.getId() + ")" + " unregistered to tower.";
+        String message = "Tower says: " + p_flyable.getType() + "#" + p_flyable.getName() + "(" + p_flyable.getId() + ")" + " unregistered to weather tower.";
         logger.writeLog(message);
     };
 

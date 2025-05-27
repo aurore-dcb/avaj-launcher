@@ -1,9 +1,6 @@
 package simulator;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-
 import java.io.File;
 import java.util.Scanner;
 
@@ -18,79 +15,63 @@ public class Simulator {
 
     private Simulator() {}
 
-    private boolean verifyInputFirstLine(String line) {
-        int nb_weather_change;
+    private void verifyInputFirstLine(String line) throws CustomException {
         try {
             simu_max_runs = Integer.parseInt(line);
         } catch (Exception e) {
-            return true;
+            throw new CustomException("Parse Error: Wrong first line format. First line must be an integer between 1 and 100.");
         }
         if (simu_max_runs <= 0 || simu_max_runs > 100) {
-            return true;
+            throw new CustomException("Parse Error: Wrong first line format. First line must be an integer between 1 and 100.");
         }
-        return false;
     }
 
-    private boolean verifyInputLineContent(String line, WeatherTower tower) {
+    private void verifyInputLineContent(String line, WeatherTower tower) throws CustomException {
 
+        int longitude, latitude, height;
         String[] splitLine = line.split(" ");
-        if (splitLine.length != 5)
-            return true;
-        if (splitLine[0].matches("^[a-zA-Z]*$") == false) {
-            return true;
-        }
-         if (splitLine[1].matches("^[A-Z0-9]*$") == false) {
-            return true;
+
+        if (splitLine.length != 5 || splitLine[0].matches("^[a-zA-Z]*$") == false || splitLine[1].matches("^[a-zA-Z0-9]*$") == false) {
+            throw new CustomException("Parse Error: Wrong flyable format. Expected format : <String> <String> <PositiveInt> <PositiveInt> <PositiveInt>");
         }
         try {
-            int longitude = Integer.parseInt(splitLine[2]);
-            int latitude = Integer.parseInt(splitLine[3]);
-            int height = Integer.parseInt(splitLine[4]);
-            if (height <= 0 || height > 100 || latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180)
-                return true;
-            Coordinates new_coordinates = new Coordinates(longitude, latitude, height);
-            Flyable new_flyable = AircraftFactory.getInstance().newAircraft(splitLine[0], splitLine[1], new_coordinates);
-            if (new_flyable == null) {
-                return false;
-            }
-            new_flyable.registerTower(tower);
+            longitude = Integer.parseInt(splitLine[2]);
+            latitude = Integer.parseInt(splitLine[3]);
+            height = Integer.parseInt(splitLine[4]);
         } catch (Exception e) {
-            return true;
+            throw new CustomException("Parse Error: Wrong flyable format. Expected format : <String> <String> <PositiveInt> <PositiveInt> <PositiveInt>");
         }
-        return false;
+        if (height <= 0 || height > 100 || latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180)
+            throw new CustomException("Parse Error: Wrong flyable format. Coordinates must be in the range: longitude [-180, 180], latitude [-90, 90], height [1, 100].");
+        
+        Coordinates new_coordinates = new Coordinates(longitude, latitude, height);
+        Flyable new_flyable = AircraftFactory.getInstance().newAircraft(splitLine[0], splitLine[1], new_coordinates);
+        if (new_flyable == null) {
+            return;
+        }
+        new_flyable.registerTower(tower);
     }
 
-    private void Parser (String file, WeatherTower tower) throws Exception {
+    private void Parser (String file, WeatherTower tower) throws CustomException, IOException {
         int nb_line = 0;
-        try {
-            Scanner sc = new Scanner(new File(file));
-
-            String line = "";
-            while (sc.hasNextLine()) {
-                line = sc.nextLine();
-                if (line.isEmpty()) {
-                    nb_line++;
-                    continue; // skip empty lines
-                }
-                if (nb_line == 0) {
-                    if (verifyInputFirstLine(line) == true) {
-                        throw new ParseErrorException("Wrong first line format.");
-                    }
-                } else {
-                    if (verifyInputLineContent(line, tower) == true) {
-                        throw new ParseErrorException("Wrong flyable format.");
-                    }
-                }
-                nb_line++;
+        Scanner sc = new Scanner(new File(file));
+        String line = "";
+        while (sc.hasNextLine()) {
+            line = sc.nextLine();
+            if (line.isEmpty()) {
+                continue; // skip empty lines
             }
-            if (nb_line < 2) {
-                throw new ParseErrorException("Wrong format input file.");
+            if (nb_line == 0) {
+                verifyInputFirstLine(line);
+            } else {
+                verifyInputLineContent(line, tower);
             }
-            sc.close();
+            nb_line++;
         }
-        catch (IOException e) {
-            throw new Exception("Input error: " + e.getMessage());
+        if (nb_line < 2) {
+            throw new CustomException("Parse Error: Wrong format input file. The file must contain at least one flyable and the number of simulations.");
         }
+        sc.close();
     }
     
     public static void main (String[] args) {
@@ -102,18 +83,24 @@ public class Simulator {
 
         try {
             if (args.length != 1) {
-                throw new Exception("Input error: The program need one argument.");
+                throw new CustomException("Input Error: The program need exactly one argument.");
             }
             simulator.Parser(args[0], weatherTower);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
+        } catch (CustomException e) {
+			System.err.println(e.getMessage());
             System.exit(1);
-        }
+		} catch (IOException e) {
+			System.err.println("File Error: Can't find or read the file \'" + args[0] + "\'.");
+            System.exit(1);
+		} 
+        // finally { 
+		// 	Logger.closeFile();
+		// }
 
         while (simulator.simu_runs < simulator.simu_max_runs) {
             weatherTower.changeWeather();
             simulator.simu_runs++;
         }
-        logger.closeWriter(); // absolument close si y'a un probleme et si le logger a ete instancié
+        logger.closeWriter();
     }
 }
