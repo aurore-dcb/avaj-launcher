@@ -1,6 +1,7 @@
 package simulator.aircraft;
 
 import simulator.*;
+import simulator.exceptions.CustomException;
 
 public class Baloon extends Aircraft {
 
@@ -10,7 +11,7 @@ public class Baloon extends Aircraft {
     }
 
     @Override
-    public void updateConditions() {
+    public void updateConditions() throws CustomException {
 
         String weather = this.weatherTower.getWeather(this.coordinates);
         int new_height = 0;
@@ -59,7 +60,7 @@ public class Baloon extends Aircraft {
                 }
                 break;
             default:
-                throw new AssertionError(); // créer un erreur
+                throw new CustomException("An unknown weather condition has been detected. Not doing anything.");
         }
     }
 }

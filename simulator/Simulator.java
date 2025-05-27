@@ -45,11 +45,12 @@ public class Simulator {
             throw new CustomException("Parse Error: Wrong flyable format. Coordinates must be in the range: longitude [-180, 180], latitude [-90, 90], height [1, 100].");
         
         Coordinates new_coordinates = new Coordinates(longitude, latitude, height);
-        Flyable new_flyable = AircraftFactory.getInstance().newAircraft(splitLine[0], splitLine[1], new_coordinates);
-        if (new_flyable == null) {
-            return;
+        try {
+            Flyable new_flyable = AircraftFactory.getInstance().newAircraft(splitLine[0], splitLine[1], new_coordinates);
+            new_flyable.registerTower(tower);
+        } catch (CustomException e) {
+            System.out.println(e.getMessage()) ;
         }
-        new_flyable.registerTower(tower);
     }
 
     private void Parser (String file, WeatherTower tower) throws CustomException, IOException {
@@ -91,11 +92,9 @@ public class Simulator {
             System.exit(1);
 		} catch (IOException e) {
 			System.err.println("File Error: Can't find or read the file \'" + args[0] + "\'.");
+            logger.closeWriter();
             System.exit(1);
-		} 
-        // finally { 
-		// 	Logger.closeFile();
-		// }
+		}
 
         while (simulator.simu_runs < simulator.simu_max_runs) {
             weatherTower.changeWeather();

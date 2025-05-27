@@ -2,6 +2,7 @@ package simulator.aircraft;
 
 import simulator.*;
 import simulator.tower.WeatherTower;
+import simulator.exceptions.CustomException;
 
 public abstract class Aircraft implements Flyable {
     protected long          id;
@@ -55,5 +56,5 @@ public abstract class Aircraft implements Flyable {
     }
 
     @Override
-    public abstract void updateConditions();
+    public abstract void updateConditions() throws CustomException;
 }

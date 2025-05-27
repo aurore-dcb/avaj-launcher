@@ -1,6 +1,7 @@
 package simulator.aircraft;
 
 import simulator.Coordinates;
+import simulator.exceptions.CustomException;
 
 public class AircraftFactory {
 
@@ -21,7 +22,7 @@ public class AircraftFactory {
         return instance;
     }
 
-    public Flyable newAircraft(String p_type, String p_name, Coordinates p_coordinates) {
+    public Flyable newAircraft(String p_type, String p_name, Coordinates p_coordinates) throws CustomException {
         Flyable newFlyable;
         switch (p_type) {
             case "Helicopter":
@@ -34,9 +35,7 @@ public class AircraftFactory {
                 newFlyable = new Baloon(id_max + 1, p_name, p_coordinates);
                 break;
             default:
-                // throw new java exception
-                System.out.println("An unknown type of aircraft have been detected. It will be ignored in the simulation.");
-                return null;
+                throw new CustomException("An unknown type of aircraft have been detected. It will be ignored in the simulation.");
         }
         id_max++;
         return newFlyable;

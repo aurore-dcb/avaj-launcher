@@ -1,8 +1,9 @@
 package simulator.tower;
 
-import simulator.*;
 import java.util.*;
+import simulator.Logger;
 import simulator.aircraft.*;
+import simulator.exceptions.*;
 
 public class Tower {
     
@@ -33,7 +34,11 @@ public class Tower {
     protected void conditionChanged() {
         Iterator<Flyable> it = observers.iterator();
         while (it.hasNext()) {
-            it.next().updateConditions();
+            try {
+                it.next().updateConditions();
+            } catch (CustomException e) {
+                System.out.println(e.getMessage());
+            }
         }
         clear_observers();
     };
