@@ -1,6 +1,6 @@
 package simulator.aircraft;
 
-import simulator.*;
+import simulator.Coordinates;
 import simulator.exceptions.CustomException;
 
 public class Baloon extends Aircraft {

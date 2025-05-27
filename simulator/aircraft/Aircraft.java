@@ -1,6 +1,7 @@
 package simulator.aircraft;
 
-import simulator.*;
+import simulator.Logger;
+import simulator.Coordinates;
 import simulator.tower.WeatherTower;
 import simulator.exceptions.CustomException;
 
@@ -29,14 +30,6 @@ public abstract class Aircraft implements Flyable {
 
     public long getId() {
         return this.id;
-    }
-
-    public String getCoordinates() { // comment
-        String longitude = Integer.toString(coordinates.getLongitude()) ;
-        String latitude = Integer.toString(coordinates.getLatitude());
-        String height = Integer.toString(coordinates.getHeight());
-        String res = "( " + longitude + " " + latitude + " " + height + " )";
-        return res;
     }
 
     public void registerTower(WeatherTower p_tower) {

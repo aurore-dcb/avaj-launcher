@@ -9,7 +9,6 @@ public interface Flyable {
     public abstract String getName();
     public abstract long getId();
     public abstract String getType();
-    public abstract String getCoordinates();
     public abstract void unregisterTower();
     public abstract void Land();
 }

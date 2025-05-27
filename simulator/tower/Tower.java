@@ -1,9 +1,10 @@
 package simulator.tower;
 
 import java.util.*;
+
 import simulator.Logger;
 import simulator.aircraft.*;
-import simulator.exceptions.*;
+import simulator.exceptions.CustomException;
 
 public class Tower {
     

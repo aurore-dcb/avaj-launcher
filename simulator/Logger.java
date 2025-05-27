@@ -4,7 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Logger {
+public class Logger implements AutoCloseable {
 
     private static Logger   instance = null;
     private FileWriter      fileWriter;
@@ -34,17 +34,19 @@ public class Logger {
             writer.newLine();
         } catch (IOException e) {
             System.out.println("Output error: " + e.getMessage());
-            this.closeWriter();
+            try {
+                this.close();
+            } catch (IOException e1) {
+                System.out.println("Error closing the logger: " + e1.getMessage());
+            }
             System.exit(1);
         }
     }
 
-    public void closeWriter() {
-        try {
+    @Override
+    public void close() throws IOException {
+        if (writer != null) {
             writer.close();
-        } catch (IOException e) {
-            System.out.println("Output error: " + e.getMessage());
-            System.exit(1);
         }
     }
 }

@@ -1,6 +1,6 @@
 package simulator.aircraft;
 
-import simulator.*;
+import simulator.Coordinates;
 import simulator.exceptions.CustomException;
 
 public class Helicopter extends Aircraft implements Flyable {

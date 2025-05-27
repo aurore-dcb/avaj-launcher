@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 import simulator.aircraft.*;
 import simulator.tower.WeatherTower;
-import simulator.exceptions.*;
+import simulator.exceptions.CustomException;
 
 public class Simulator {
 
@@ -55,24 +55,24 @@ public class Simulator {
 
     private void Parser (String file, WeatherTower tower) throws CustomException, IOException {
         int nb_line = 0;
-        Scanner sc = new Scanner(new File(file));
-        String line = "";
-        while (sc.hasNextLine()) {
-            line = sc.nextLine();
-            if (line.isEmpty()) {
-                continue; // skip empty lines
+        try (Scanner sc = new Scanner(new File(file))) {
+            String line = "";
+            while (sc.hasNextLine()) {
+                line = sc.nextLine();
+                if (line.isEmpty()) {
+                    continue; // skip empty lines
+                }
+                if (nb_line == 0) {
+                    verifyInputFirstLine(line);
+                } else {
+                    verifyInputLineContent(line, tower);
+                }
+                nb_line++;
             }
-            if (nb_line == 0) {
-                verifyInputFirstLine(line);
-            } else {
-                verifyInputLineContent(line, tower);
-            }
-            nb_line++;
         }
         if (nb_line < 2) {
             throw new CustomException("Parse Error: Wrong format input file. The file must contain at least one flyable and the number of simulations.");
         }
-        sc.close();
     }
     
     public static void main (String[] args) {
@@ -80,26 +80,23 @@ public class Simulator {
         Simulator simulator = new Simulator();
         WeatherTower weatherTower = new WeatherTower();
         AircraftFactory factory = AircraftFactory.getInstance();
-        Logger logger = Logger.getInstance();
 
-        try {
+        try (Logger logger = Logger.getInstance()) {
             if (args.length != 1) {
                 throw new CustomException("Input Error: The program need exactly one argument.");
             }
             simulator.Parser(args[0], weatherTower);
+            
+            while (simulator.simu_runs < simulator.simu_max_runs) {
+                weatherTower.changeWeather();
+                simulator.simu_runs++;
+            }
         } catch (CustomException e) {
 			System.err.println(e.getMessage());
             System.exit(1);
 		} catch (IOException e) {
 			System.err.println("File Error: Can't find or read the file \'" + args[0] + "\'.");
-            logger.closeWriter();
             System.exit(1);
 		}
-
-        while (simulator.simu_runs < simulator.simu_max_runs) {
-            weatherTower.changeWeather();
-            simulator.simu_runs++;
-        }
-        logger.closeWriter();
     }
 }
